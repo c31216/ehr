@@ -18,3 +18,6 @@ Route::resource('checkup', 'CheckupController');
 Route::get('search', [
     'as' => 'posts.search', 'uses' => 'PostController@search'
 ]);
+Route::post('add_vstatus', [
+	'as' => 'posts.add_vstatus', 'uses' => 'VaccinationStatusController@add'
+]);

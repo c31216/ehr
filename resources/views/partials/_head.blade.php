@@ -6,9 +6,15 @@
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <title>@yield('title')</title>
 
+
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <!-- css -->
 {{ Html::style('css/bootstrap.min.css') }}
 {{ Html::style('css/style.css') }}
+
+
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
 
 @yield('stylesheets')
 
