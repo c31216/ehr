@@ -23,17 +23,6 @@
 					</div>
 		      	</li>
 
-		        <li class="">
-		        	<a href="{{ route('posts.create') }}">
-		        		<div class="row nav-icon">
-			        		<img src="/img/adduser-icon.png">
-			        	</div>
-			        	<div class="row">
-			        		Add a Record<span class="sr-only">(current)</span>
-			        	</div>
-		        	</a>
-		        </li>
-
 		        <li>
 		        	<a href="{{ route('posts.index') }}">
 		        		<div class="row nav-icon">

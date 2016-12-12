@@ -28,7 +28,7 @@ class PostController extends Controller
 
     public function index()
     {
-        $post = Post::all();
+        $post = Post::orderBy('id')->paginate(10);
 
         return view('posts.index')->withPosts($post);
 
@@ -53,27 +53,30 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-                'pat_uname' => 'required|max:255',
-                'pat_pass' => 'required|max:255',
                 'pat_fname' => 'required|max:255',
                 'pat_lname' => 'required|max:255',
-                'pat_bdate' => 'required|max:255'
+                'pat_bdate' => 'required|max:255',
+                'weight' => 'required|max:255',
+                'height' => 'required|max:255',
+                'age' => 'required|max:255',
+                'sex' => 'required|min:1',
+                'mother_name' => 'required|max:255',
+                'address' => 'required|max:255'
 
             ]);
-
+      
         $post = new Post;
-
-        $post->pat_uname = $request->pat_uname;
-        $post->pat_pass = bcrypt($request->pat_pass);
         $post->pat_fname = $request->pat_fname;
         $post->pat_lname = $request->pat_lname;
         $post->pat_bdate = $request->pat_bdate;
+        $post->weight = $request->weight;
+        $post->height = $request->height;
+        $post->age = $request->age;
+        $post->sex = $request->sex;
+        $post->mother_name = $request->mother_name;
+        $post->address = $request->address;
 
         $post->save();
-
-        Session::flash('success', 'Record Successfully Added');
-
-        return redirect()->route('posts.create');
     }
 
     /**
@@ -123,21 +126,20 @@ class PostController extends Controller
         //         'body' => 'required'
         //     ));
         // }
-        
+        echo $request->pat_uname;
+        // $post = Post::find($id);
 
-        $post = Post::find($id);
+        // $post->pat_uname = $request->pat_uname;
+        // $post->pat_pass = bcrypt($request->pat_pass);
+        // $post->pat_fname = $request->pat_fname;
+        // $post->pat_lname = $request->pat_lname;
+        // $post->pat_bdate = $request->pat_bdate;
 
-        $post->pat_uname = $request->pat_uname;
-        $post->pat_pass = bcrypt($request->pat_pass);
-        $post->pat_fname = $request->pat_fname;
-        $post->pat_lname = $request->pat_lname;
-        $post->pat_bdate = $request->pat_bdate;
+        // $post->save();
 
-        $post->save();
+        // Session::flash('success' , 'Successfully saved.');
 
-        Session::flash('success' , 'Successfully saved.');
-
-        return redirect()->route('posts.index');
+        // return redirect()->route('posts.index');
     }
 
     /**
@@ -160,12 +162,18 @@ class PostController extends Controller
             $output = "";
             if ($posts) {
                 foreach ($posts as  $post) {
-                    $output = "<td>".$post->pat_lname .', '.$post->pat_fname ."</td>".
-                              "<td><a href='posts/".$post->id."'><div class='link-box'><img src='img/babybottle-icon.png'><p>View Status</p></div></a><td>".
-
-                              "<td><a href='posts/".$post->id."/edit'><div class='link-box'><img src='img/edituser-icon.png'><p>Edit</p></div></a><td>".
-
-                              "<td><a href='checkup/".$post->id."'><div class='link-box'><img src='img/babybottle-icon.png'><p>Profile</p></div></a><td>";
+                    $output = "<td>".$post->created_at."</td>".
+                              "<td>".$post->pat_bdate."</td>".
+                              "<td>".$post->pat_lname."</td>".
+                              "<td>".$post->pat_fname."</td>".
+                              "<td>".$post->weight."</td>".
+                              "<td>".$post->height."</td>".
+                              "<td>".$post->age."</td>".
+                              "<td>".$post->sex."</td>".
+                              "<td>".$post->mother_name."</td>".
+                              "<td>".$post->address."</td>".
+                              "<td><a href='posts/".$post->id."'><p>View Status</p></a><td>".
+                              "<td><a href='checkup/".$post->id."'><p>Check Up</p></a><td>";
 
                               
                 }

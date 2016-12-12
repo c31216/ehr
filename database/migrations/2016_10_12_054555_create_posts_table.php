@@ -15,11 +15,17 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('pat_uname')->unique();
-            $table->string('pat_pass');
+            $table->string('pat_uname')->unique()->nullable();
+            $table->string('pat_pass')->nullable();
             $table->string('pat_fname');
             $table->string('pat_lname');
-            $table->date('pat_bdate')->nullable();
+            $table->decimal('weight');
+            $table->decimal('height');
+            $table->integer('age');
+            $table->char('sex');
+            $table->string('mother_name');
+            $table->string('address');
+            $table->date('pat_bdate');
             $table->timestamps();
         });
     }

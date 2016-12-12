@@ -2,134 +2,191 @@
 
 @section('content')
 
-	<div class="row custom-text">
+	
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <h3>Basic info</h3>
+        <thead>
+          <tr>
+            <th>Date of registration</th>
+            <th>Date of birth</th>
+            <th>Last name</th>
+            <th>First name</th> 
+            <th>Weight</th>
+            <th>Height</th>
+            <th>Age</th>
+            <th>Sex</th>
+            <th>Name of mother</th>
+            <th>Address</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr class="active">
+              <td>{{$posts->created_at}}</td>
+              <td>{{$posts->pat_bdate}}</td>
+              <td>{{$posts->pat_lname}}</td>
+              <td>{{$posts->pat_fname}}</td>
+              <td>{{$posts->weight}}</td>
+              <td>{{$posts->height}}</td>
+              <td>{{$posts->pat_lname}}</td>
+              <td>{{$posts->sex}}</td>
+              <td>{{$posts->mother_name}}</td>
+              <td>{{$posts->address}}</td>
+            </tr>
+        </tbody>
+      </table>
+    </div><!-- Div.table-responsive-->
 
-		<div class="col-md-4">
-			<h1 class="toddler-name" id="toddler_name">{{ $posts->pat_lname. ', ' . $posts->pat_fname }}</h1>
-		</div>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+      <h3>TCL For Nutrition and EPI Program P1</h3>
+        <tr>
+          <th colspan="2" rowspan="2">Date New Born Screening</th>
+          <th colspan="2" rowspan="2">Child Protected at Birth</th>
+          <th colspan="12">Date Immunization Received</th>
+        </tr>
+        <tr>
+          <td rowspan="2">BCG</td>
+          <td colspan="2">Hepa B1</td>
+          <td colspan="4">Pentavalent</td>
+          <td colspan="3">OPV</td>
+          <td colspan="2">MVC</td>
+        </tr>
+        <tr>
+          <td>Referral</td>
+          <td>Done</td>
+          <td>TT Status Date</td>
+          <td>Date Asses</td>
+          <td>w/in <br>24 hours</td>
+          <td>More than<br>24 hours</td>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>MVC1</td>
+          <td>MVC2</td>
+        </tr>
+      <tbody>
+        <tr class="active">
+          <td>12-13-16</td>
+          <td>12-13-16</td>
+          <td>12-13-16</td>
+          <td>12-13-16</td>
+          <td>12-13-16</td>
+          <td>12-13-16</td>
+          <td>12-13-16</td>
+          <td>12-13-16</td>
+          <td>12-13-16</td>
+          <td>12-13-16</td>
+          <td>12-13-16</td>
+          <td>12-13-16</td>
+          <td>12-13-16</td>
+          <td>12-13-16</td>
+          <td>12-13-16</td>
+          <td>12-13-16</td>
+        </tr>
+      </tbody>
+      </table>
+    </div><!-- Div.table-responsive-->
 
-      	<div class="col-md-4">
-        	<h1>Vaccine status</h1>
-      	</div>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+      <h3>TCL For Nutrition and EPI Program P2</h3>
+        <tr>
+          <th rowspan="2">Date<br>Fully<br>Immunized<br>Child</th>
+          <th colspan="2">Rota Virus<br>Vaccine</th>
+          <th colspan="4">Pneumococcal<br>Conjugate Vaccines (PCV)</th>
+          <th colspan="6">Child Was Exclusively Breastfed</th>
+          <th colspan="3">Complementary Feeding</th>
+          <th rowspan="2">Remarks</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>1st<br>MO</td>
+          <td>2nd<br>MO</td>
+          <td>3rd<br>MO</td>
+          <td>4th<br>MO</td>
+          <td>5th<br>MO</td>
+          <td>Date<br>6th MO</td>
+          <td>6th<br>MO</td>
+          <td>7th<br>MO</td>
+          <td>8th<br>MO</td>
+        </tr>
+        <tbody>
+          <tr class="active">
+            <td>12-13-16</td>
+            <td>12-13-16</td>
+            <td>12-13-16</td>
+            <td>12-13-16</td>
+            <td>12-13-16</td>
+            <td>12-13-16</td>
+            <td>12-13-16</td>
+            <td><input type="checkbox"></td>
+            <td><input type="checkbox"></td>
+            <td><input type="checkbox"></td>
+            <td><input type="checkbox"></td>
+            <td><input type="checkbox"></td>
+            <td>12-13-16</td>
+            <td><input type="checkbox"></td>
+            <td><input type="checkbox"></td>
+            <td><input type="checkbox"></td>
+            <td>Leave empty(not sure)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div><!-- Div.table-responsive-->
 
-      	<div class="col-md-4">
-        	<h1>Date of birth:</h1>
-      	</div>
-
-	</div>
-    <hr>
-    <div class="row" id="vaccines">
-       <div class="col-md-4">
-        <h1>Birth</h1>
-
-        @foreach($vaccines as $vaccine)
-
-          @if($vaccine->time_period == 'Birth')
-            <div class="col-md-5">
-              <div class="dropdown">
-                 <a data-toggle="dropdown" id="{{$vaccine->id}}" href="#">
-                    <p><img class="down-arrow-icon" src="../img/downarrow-icon.png"><span>{{$vaccine->v_abbr}}</span></p>
-                 </a>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" >
-                  <a id="option_1"  data-toggle="modal" data-target="#birth_{{$vaccine->id}}"><li>Already Immunized</li></a>
-                  <a id="option_2"  data-toggle="modal" data-target="#reminder"><li>Set Reminder</li></a>
-                  <a id="option_3"><li>Reset</li></a>
-                </ul>
-              </div>
-              <br>
-            </div>  
-            <div class="col-md-7">
-              <p><img src="../img/shieldpending-icon.png" >
-              <span id="">Pending</span></p><br>
-            </div>
-          @endif
-
-          <!-- Immunized Modal -->
-        <div class="modal fade" id="birth_{{$vaccine->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">{{$vaccine->v_abbr}}</h4>
-              </div>
-              <div class="modal-body">
-                {!! Form::open(['route' => 'posts.add_vstatus','data-parsley-validate' => '']) !!}
-              
-                <input type="text" name="daterange" id="v_date">
-                {{ Form::hidden('p_id', $posts->id, ['id' => 'p_id']) }}
-                {{ Form::hidden('v_id', $vaccine->id,[ 'id' => 'v_id']) }}
-
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                {{ Form::submit('Add Date/Time', ['class' => 'btn btn-success', 'id' => 'add']) }}
-
-                {!! Form::close() !!}
-
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- End Immunized Modal-->
-
-        @endforeach
-
-      </div>
-
-       <div class="col-md-4">
-        <h1>Week 6</h1>
-
-        @foreach($vaccines as $vaccine)
-
-          @if($vaccine->time_period == 'Week 6')
-            <div class="col-md-5">
-              <div class="dropdown">
-                 <a data-toggle="dropdown" id="{{$vaccine->id}}" href="#">
-                    <p><img class="down-arrow-icon" src="../img/downarrow-icon.png"><span>{{$vaccine->v_abbr}}</span></p>
-                 </a>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" >
-                  <a id="option_1" class="" data-toggle="modal" data-target="#immunized"><li>Already Immunized</li></a>
-                  <a id="option_2" class="" data-toggle="modal" data-target="#reminder"><li>Set Reminder</li></a>
-                  <a id="option_3"><li>Reset</li></a>
-                </ul>
-              </div>
-              <br>
-            </div>  
-            <div class="col-md-7">
-              <p><img src="../img/shieldpending-icon.png" id="vaccine_">
-              <span >Pending</span></p><br>
-            </div>
-          @endif
-          
-        @endforeach
-
-        
-        
-        <!-- Reminder Modal -->
-        <div class="modal fade" id="reminder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Set Reminder</h4>
-              </div>
-              <div class="modal-body">
-                ...
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- End Reminder Modal-->
-
-        
+    <div class="table-responsive">
+      <table class="table table-bordered">
+      <h3>TCL For Nutrition and EPI Program P3</h3>
+        <tr>
+          <th colspan="7">Micronutrient Supplementation</th>
+          <th rowspan="2">Deworming</th>
+          <th rowspan="4">Remarks</th>
+        </tr>
+        <tr>
+          <td colspan="3">Vitamin A</td>
+          <td colspan="2">IRON</td>
+          <td colspan="2">M N P</td>
+        </tr>
+        <tr>
+          <td rowspan="2">6-11<br>MOS</td>
+          <td colspan="2">12-59 MOS.</td>
+          <td rowspan="2">6-11<br>MOS</td>
+          <td rowspan="2">12-59<br>MOS</td>
+          <td rowspan="2">6-11<br>MOS</td>
+          <td rowspan="2">12-23<br>MOS</td>
+          <td rowspan="2">12-59<br>MOS</td>
+        </tr>
+        <tr>
+          <td>Dose 1</td>
+          <td>Dose 2</td>
+        </tr>
+        <tbody>
+          <tr class="active">
+            <td>Blank</td>
+            <td>Blank</td>
+            <td>Blank</td>
+            <td>Blank</td>
+            <td>Blank</td>
+            <td>Blank</td>
+            <td>Blank</td>
+            <td>Blank</td>
+            <td>Blank</td>
+          </tr>
+        </tbody>
+      </table>
+    </div><!-- Div.table-responsive-->
 
 
-      </div>
-     </div>
      <script>
        var url = '{{ route('posts.add_vstatus') }}';
        var token = '{{ Session::token() }}';
@@ -137,6 +194,5 @@
 @endsection
 
 @section('scripts')
-  {!! Html::script('js/immunize.js') !!}
-  
+
 @endsection
