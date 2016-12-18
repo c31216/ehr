@@ -28,7 +28,7 @@ class PostController extends Controller
 
     public function index()
     {
-        $post = Post::orderBy('id')->paginate(10);
+        $post = Post::orderBy('id', 'desc')->paginate(10);
 
         return view('posts.index')->withPosts($post);
 
@@ -75,8 +75,11 @@ class PostController extends Controller
         $post->sex = $request->sex;
         $post->mother_name = $request->mother_name;
         $post->address = $request->address;
+        $post->registration_date = $request->registration_date;
 
         $post->save();
+
+        echo $post->id;
     }
 
     /**
@@ -126,16 +129,15 @@ class PostController extends Controller
         //         'body' => 'required'
         //     ));
         // }
-        echo $request->pat_uname;
-        // $post = Post::find($id);
+        $post = Post::find($request->id);
 
-        // $post->pat_uname = $request->pat_uname;
-        // $post->pat_pass = bcrypt($request->pat_pass);
-        // $post->pat_fname = $request->pat_fname;
-        // $post->pat_lname = $request->pat_lname;
-        // $post->pat_bdate = $request->pat_bdate;
+        $post->$request['col'] = $request->value;
 
-        // $post->save();
+        $post->save();
+
+        
+        echo $request->value;
+      
 
         // Session::flash('success' , 'Successfully saved.');
 
@@ -158,22 +160,28 @@ class PostController extends Controller
 
     public function search(Request $request){
         if ($request->ajax()) {
-            $posts = Post::where('pat_fname','like', '%'.$request->search.'%')->orWhere('pat_lname','like', '%'.$request->search.'%')->get();
             $output = "";
+            if (empty($request->sort)) {
+                $sort = 'id';
+            }else{
+                $sort = $request->sort;
+            }
+            $posts = Post::orderBy($sort, 'asc')->where('pat_fname','like', $request->search.'%')->orWhere('pat_lname','like', $request->search.'%')->get();
+            
             if ($posts) {
                 foreach ($posts as  $post) {
-                    $output = "<td>".$post->created_at."</td>".
-                              "<td>".$post->pat_bdate."</td>".
-                              "<td>".$post->pat_lname."</td>".
-                              "<td>".$post->pat_fname."</td>".
-                              "<td>".$post->weight."</td>".
-                              "<td>".$post->height."</td>".
-                              "<td>".$post->age."</td>".
-                              "<td>".$post->sex."</td>".
-                              "<td>".$post->mother_name."</td>".
-                              "<td>".$post->address."</td>".
-                              "<td><a href='posts/".$post->id."'><p>View Status</p></a><td>".
-                              "<td><a href='checkup/".$post->id."'><p>Check Up</p></a><td>";
+                    $output .= "<tr><td class='date registration_date' id='".$post->id."'>".$post->registration_date."</td>".
+                               "<td class='date pat_bdate' id='".$post->id."'>".$post->pat_bdate."</td>".
+                               "<td class='edit pat_lname' id='".$post->id."'>".$post->pat_lname."</td>".
+                               "<td class='edit pat_fname' id='".$post->id."'>".$post->pat_fname."</td>".
+                               "<td class='edit weight' id='".$post->id."'>".$post->weight."</td>".
+                               "<td class='edit height' id='".$post->id."'>".$post->height."</td>".
+                               "<td class='edit age' id='".$post->id."'>".$post->age."</td>".
+                               "<td class='edit sex' id='".$post->id."'>".$post->sex."</td>".
+                               "<td class='edit mother_name' id='".$post->id."'>".$post->mother_name."</td>".
+                               "<td class='edit address' id='".$post->id."'>".$post->address."</td>".
+                               "<td><a href='posts/".$post->id."'><p>View Profile</p></a><td>".
+                               "<td><a href='checkup/".$post->id."'><p>Check Up</p></a><td></tr>";
 
                               
                 }
@@ -185,4 +193,6 @@ class PostController extends Controller
         }
         
     }
+
+  
 }

@@ -26,6 +26,7 @@ class CreatePostsTable extends Migration
             $table->string('mother_name');
             $table->string('address');
             $table->date('pat_bdate');
+            $table->date('registration_date');
             $table->timestamps();
         });
     }

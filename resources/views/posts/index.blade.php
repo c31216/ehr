@@ -8,10 +8,7 @@
 @endsection
 
 @section('content')
-
-    {{ Form::label('search', "Search: ") }}
-    {{ Form:: text('search', null, ['id'=>'search'])}}
-    <style>
+ <style>
       .remove-appearance:disabled{
          outline: none;
          border: none;
@@ -21,15 +18,23 @@
         background-color: #e74c3c;
         color: white;
       }
-    </style>
+      .error {
+        color: red;
+      }
+  </style>
+
+    {{ Form::label('search', "Search: ") }}
+    {{ Form:: text('search', null, ['id'=>'search'])}}
+    <span id="found"></span>
+   
     <hr>
         <h3>Records <a href="#" id="add-record"><img class="add-record-button" src="/img/add_record.png"></a></h3>
         <p>Sort by:</p>
         <form action="">
-          <input type="radio" value="lastname" name="noys"> Last name
-          <input type="radio" value="firstname" name="noys"> First name
-          <input type="radio" value="dateofregistration" name="noys"> Date of Registration
-          <input type="radio" value="dateofbirth" name="noys"> Date of Birth
+          <input type="radio" value="pat_lname" name="sort"> Last name
+          <input type="radio" value="pat_fname" name="sort"> First name
+          <input type="radio" value="registration_date" name="sort"> Date of Registration
+          <input type="radio" value="pat_bdate" name="sort"> Date of Birth
         </form>      
         <br>
 
@@ -46,27 +51,28 @@
                 <th>Age</th>
                 <th>Sex</th>
                 <th>Name of mother</th>
-                <th>Address</th>
-                <th>Actions</th>
+                <th>Address</th>  
+              
+
               </tr>
             </thead>
-          
+              
+              
             <tbody id="p_list">
               @foreach($posts as $post)
                 <tr>
-                  {!! Form::model($post, ['route' => ['posts.update', $post->id ], 'method'=> 'PUT']) !!}
-                  <td class="edit charcounter">{{$post->created_at}}</td>
-                  <td class="edit charcounter">{{$post->pat_bdate}}</td>
-                  <td class="edit charcounter">{{$post->pat_lname}}</td>
-                  <td class="edit charcounter">{{$post->pat_fname}}</td>
-                  <td class="edit charcounter">{{$post->weight}}</td>
-                  <td class="edit charcounter">{{$post->height}}</td>
-                  <td class="edit charcounter">{{$post->age}}</td>
-                  <td class="edit charcounter">{{$post->sex}}</td>
-                  <td class="edit charcounter">{{$post->mother_name}}</td>
-                  <td class="edit charcounter">{{$post->address}}</td>
-                  {{ Form::submit('Save Changes', ['class' => 'btn btn-success']) }}
-                  {!! Form::close() !!}
+                  <td class="date registration_date" id="{{$post->id}}">{{$post->registration_date}}</td>
+                  <td class="date pat_bdate" id="{{$post->id}}">{{$post->pat_bdate}}</td>
+                  <td class="edit pat_lname" id="{{$post->id}}">{{$post->pat_lname}}</td>
+                  <td class="edit pat_fname" id="{{$post->id}}">{{$post->pat_fname}}</td>
+                  <td class="edit weight" id="{{$post->id}}">{{$post->weight}}</td>
+                  <td class="edit height" id="{{$post->id}}">{{$post->height}}</td>
+                  <td class="edit age" id="{{$post->id}}">{{$post->age}}</td>
+                  <td class="edit sex" id="{{$post->id}}">{{$post->sex}}</td>
+                  <td class="edit mother_name" id="{{$post->id}}">{{$post->mother_name}}</td>
+                  <td class="edit address" id="{{$post->id}}">{{$post->address}}</td>
+                  {{-- <td><input type="hidden" name="_method" value="PUT" /></td> --}}
+
                   <td>
                     <a href="{{ route('posts.show', $post->id) }}">
                         <p>View Profile</p>
@@ -82,31 +88,35 @@
                 </tr>
               @endforeach
             </tbody>
-            <tbody>
-              <tr id="search">
-
-              </tr>
+            <tbody id="search">
+              
             </tbody>
           </table>
         </div>
+
+
         <div class="text-center">
         {!! $posts->links(); !!}
       </div>
-    
-  <script>  
+  <script type="text/javascript">  
     var token = '{{ Session::token() }}';
     var url = '{{ route('posts.search') }}';
     var add = '{{ route('posts.store') }}'
-    var show = '{{ route('posts.show', $post->id) }}';
-    var edit = '{{route('posts.update', $post->id)}}';
+    var index = "{{route('posts.index')}}";
     var csrf = '{{ csrf_field() }}';
   </script>
-@endsection
 
-@section('scripts')
-  {!! Html::script('js/search.js') !!}
-  {!! Html::script('js/addrecord.js') !!}
-  {!! Html::script('dist/datepicker.js') !!}
-  {!! Html::script('js/inlineeditor.js') !!}
+
+  @section('scripts')
+    {!! Html::script('js/jquery.validate.js') !!}
+    {!! Html::script('js/search.js') !!}
+    {!! Html::script('js/addrecord.js') !!}
+    {!! Html::script('dist/datepicker.js') !!}
+    {!! Html::script('js/inlineeditor.js') !!}
+    {!! Html::script('js/jquery.tabledit.min.js') !!}
+    {!! Html::script('js/jquery.jeditable.datepicker.js') !!}
+    
+
+  @endsection
 
 @endsection
