@@ -21,10 +21,6 @@
       .error {
         color: red;
       }
-      .success{
-        background-color: #5cb85c;
-        color: white;
-      }
   </style>
 
     {{ Form::label('search', "Search: ") }}

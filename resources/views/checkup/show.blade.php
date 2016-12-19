@@ -10,24 +10,14 @@
 @endsection
 
 @section('content')
-<div class="container">  	
-	<h1 class="title-page">Check-Up Checklist of {{$posts->pat_lname.', '.$posts->pat_fname}}</h1>
+<div class="container">
+	<h1 class="title-page">{{$posts->pat_lname.', '.$posts->pat_fname}}</h1>
 	<!-- Trigger the modal with a button -->
-<br>
-<button class="btn btn-success" type="button" data-toggle="modal" data-target="#check-up">Add New</button>
-<!-- Modal -->
+	<br>
+	<h3>Check-Up <a href="#" id="check-up"><img class="add-record-button" src="/img/add_record.png"></a></h3>
+		
 
-<div id="check-up" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Check Up</h4>
-      </div>
-      <div class="modal-body">
-        {!! Form::open(['route' => 'checkup.store','data-parsley-validate' => '']) !!}
+        {{-- {!! Form::open(['route' => 'checkup.store','data-parsley-validate' => '']) !!}
 
 				<div class="row">
 				  <div class="form-group col-xs-5 col-lg-6">
@@ -91,102 +81,103 @@
 
 			    	{{ Form::submit('Check-Up', ['class' => 'btn btn-success']) }}
 
-			{!! Form::close() !!}
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
+			{!! Form::close() !!} --}}
 
-  </div>
-</div>
-<!-- END Modal -->
 <hr>
 <div class="row">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Check-Up Date</th>
-          <th>Doctor</th>
-          <th>Symptoms</th>
-          <th>Prescription</th>
-          <th>Description</th>
-          <th>Weight</th>
-          <th>Height</th>
-        </tr>
-      </thead>
-      <tbody>
+    <div class="table-responsive">
+        <table class="table table-hover">
 
-		@foreach($checklists as $checklist)
+	      <thead>
+	        <tr>
+	          <th>Check-Up Date</th>
+	          <th>Doctor</th>
+	          <th>Symptoms</th>
+	          <th>Prescription</th>
+	          <th>Description</th>
+	          <th>Weight</th>
+	          <th>Height</th>
+	        </tr>
+	      </thead>
 
-          <tr>
-            <td><p>{{$checklist->created_at}}</p></td>
-            <td><p>{{$checklist->description}}</p></td>
-            <td><p>{{$checklist->doctor}}</p></td>
-            <td><button type="button" class="btn btn-success" id="edit" data-id="{{$checklist->id}}" data-toggle="modal" data-target="#edit_{{$checklist->id}}">Edit</button></td>
+	      <tbody id="checklist">
 
-           </tr>
+			@foreach($checklists as $checklist)
 
+	          <tr>
+	            <td><p>{{$checklist->created_at}}</p></td>
+	            <td><p>{{$checklist->description}}</p></td>
+	            <td><p>{{$checklist->doctor}}</p></td>
+	            <td><button type="button" class="btn btn-success" id="edit" data-id="{{$checklist->id}}" data-toggle="modal" data-target="#edit_{{$checklist->id}}">Edit</button></td>
 
-           <!-- Edit Modal -->
-			<div id="edit_{{$checklist->id}}" class="modal fade" role="dialog">
-			  <div class="modal-dialog">
-
-			    <!-- Modal content-->
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title">Edit</h4>
-			      </div>
-			      <div class="modal-body">
-			        {!! Form::model($checklist, ['route' => ['checkup.update', $checklist->id ], 'method'=> 'PUT']) !!}
+	           </tr>
 
 
-						    <div class="row">
-							  <div class="form-group col-xs-5 col-lg-7">
+	           <!-- Edit Modal -->
+				<div id="edit_{{$checklist->id}}" class="modal fade" role="dialog">
+				  <div class="modal-dialog">
 
-							    {{ Form::label('description', "Description") }}
-							    {{ Form::text('description', $checklist->description, ['class' => 'form-control', 'required' => '', 'maxlength' => '255']) }}
+				    <!-- Modal content-->
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        <h4 class="modal-title">Edit</h4>
+				      </div>
+				      <div class="modal-body">
+				        {!! Form::model($checklist, ['route' => ['checkup.update', $checklist->id ], 'method'=> 'PUT']) !!}
 
 
-							  </div>
-						    </div>
+							    <div class="row">
+								  <div class="form-group col-xs-5 col-lg-7">
 
-						    <div class="row">
-							  <div class="form-group col-xs-5 col-lg-7">
+								    {{ Form::label('description', "Description") }}
+								    {{ Form::text('description', $checklist->description, ['class' => 'form-control', 'required' => '', 'maxlength' => '255']) }}
 
-							    {{ Form::label('doctor', "Doctor") }}
-							    {{ Form::text('doctor', $checklist->doctor, ['class' => 'form-control', 'required' => '', 'maxlength' => '255']) }}
-							    {{ Form::hidden('p_id', $checklist->p_id) }}
 
-							  </div>
-						    </div>
+								  </div>
+							    </div>
 
-						    	{{ Form::submit('Save Changes', ['class' => 'btn btn-success']) }}
+							    <div class="row">
+								  <div class="form-group col-xs-5 col-lg-7">
 
-						{!! Form::close() !!}
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			      </div>
-			    </div>
+								    {{ Form::label('doctor', "Doctor") }}
+								    {{ Form::text('doctor', $checklist->doctor, ['class' => 'form-control', 'required' => '', 'maxlength' => '255']) }}
+								    {{ Form::hidden('p_id', $checklist->p_id) }}
 
-			  </div>
-			</div>
-			<!-- END Modal -->
+								  </div>
+							    </div>
 
-		@endforeach
+							    	{{ Form::submit('Save Changes', ['class' => 'btn btn-success']) }}
 
-      </tbody>
-    </table>
+							{!! Form::close() !!}
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				      </div>
+				    </div>
+
+				  </div>
+				</div>
+				<!-- END Modal -->
+
+			@endforeach
+
+	      </tbody>
+	    </table>
+	</div>
   </div>
-</div><!-- end of container-->
-
-
+</div>	
 @endsection
 
 
 @section('scripts')
+	<script>
+	    var token = '{{ Session::token() }}';
+	    var url = '{{ route('posts.search') }}';
+	    var add = '{{ route('posts.store') }}'
+	    var index = "{{route('posts.index')}}";
+	    var csrf = '{{ csrf_field() }}';
+	</script>
 	{!! Html::script('js/parsley.min.js') !!}
     {!! Html::script('dist/datepicker.js') !!}
     {!! Html::script('js/inlineeditor.js') !!}
@@ -195,12 +186,6 @@
     
 
 
-	<script>
-		$("button#edit").click(function(){
-			var c_id = $(this).data('id');
-			
-
-		});
-	</script>
+	
 
 @endsection

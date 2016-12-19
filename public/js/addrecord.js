@@ -32,18 +32,10 @@ $(document).ready(function(){
 	  		format: 'yyyy-mm-dd'
 	  	});
 
+	  	$('#active input').keypress(function(event){
 
-	});	
-	
-	$(window).click(function(e)
-	{
-		if (status==1) {
-
-			if ( e.target.nodeName=="INPUT" ) {
-			    return;
-			}
-
-			pat_bdate = $("input[name=pat_bdate]").val();
+		  if(event.keyCode == 13){
+		    pat_bdate = $("input[name=pat_bdate]").val();
 			var pat_lname = $("input[name=pat_lname]").val();
 			var pat_fname = $("input[name=pat_fname]").val();
 			var weight = $("input[name=weight]").val();
@@ -61,7 +53,6 @@ $(document).ready(function(){
 			
 			$('tr td input').filter(function() {
 			    return !this.value;
-			    alert('filter');
 			}).attr("placeholder", "Required").addClass("required");
 
 			$.ajax({
@@ -95,6 +86,24 @@ $(document).ready(function(){
 	          }
 	           
 	        });
+		  }
+		});
+
+
+	});	
+	
+	$(window).click(function(e)
+	{
+		if (status==1) {
+
+			if ( e.target.nodeName=="INPUT" ) {
+			    return;
+			}
+
+			$("tr#active td").remove();
+			addrecord.show();
+
+			
        	}
 	});
 
@@ -174,7 +183,12 @@ $('.date').editable('posts/update', {
     }
  });
 
- $(document).on("keyup", "input", function(){
+ $(document).on("keyup", "input", function(e){
+ 	if (e.keyCode === 10 || e.keyCode === 13){
+ 		return false;
+ 	} 
+        
+
     $(this).removeClass("required");
 });
 
