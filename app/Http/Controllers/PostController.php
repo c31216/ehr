@@ -91,8 +91,7 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::find($id);
-        $vaccine = Vaccine::all();
-        return view('posts.show')->withPosts($post)->withVaccines($vaccine);
+        return view('posts.show')->withPosts($post);
     }
 
     /**

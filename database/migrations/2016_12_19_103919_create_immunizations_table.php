@@ -4,22 +4,22 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Checkups extends Migration
+class CreateImmunizationsTable extends Migration
 {
-     /**
+    /**
      * Run the migrations.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('checkups', function (Blueprint $table) {
+        Schema::create('immunizations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('symptoms');
-            $table->string('prescription');
-            $table->string('doctor');
+            $table->string('vaccine_taken');
+            $table->string('description');
+            $table->string('midwife');
             $table->integer('p_id');
-            $table->date('checkup_date');
+            $table->date('vaccination_received');
             $table->integer('weight');
             $table->integer('height');
             $table->timestamps();
@@ -33,6 +33,6 @@ class Checkups extends Migration
      */
     public function down()
     {
-        Schema::drop('checkups');
+        Schema::dropIfExists('immunizations');
     }
 }

@@ -41,16 +41,26 @@ class CheckupController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-                'description' => 'required|max:255',
+                'p_id' => 'required|max:255|numeric',
+                'checkup_date' => 'required|max:255|date',
                 'doctor' => 'required|max:255',
-
+                'symptoms' => 'required|max:255',
+                'prescription' => 'required|max:255',
+                'weight' => 'required|max:255|numeric',
+                'height' => 'required|max:255|numeric',
+                
             ]);
 
         $checkup = new Checkup;
 
         $checkup->p_id = $request->p_id;
-        $checkup->description = $request->description;
+        $checkup->checkup_date = $request->checkup_date;
         $checkup->doctor = $request->doctor;
+        $checkup->symptoms = $request->symptoms;
+        $checkup->prescription = $request->prescription;
+        $checkup->description = $request->description;
+        $checkup->weight = $request->weight;
+        $checkup->height = $request->height;
 
         $checkup->save();
 

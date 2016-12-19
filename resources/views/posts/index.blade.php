@@ -15,11 +15,15 @@
          background-color:white;
       }
       .required{
-        background-color: #e74c3c;
+        background-color: #d9534f;
         color: white;
       }
       .error {
         color: red;
+      }
+      .success{
+        background-color: #5cb85c;
+        color: white;
       }
   </style>
 
@@ -108,12 +112,10 @@
 
 
   @section('scripts')
-    {!! Html::script('js/jquery.validate.js') !!}
     {!! Html::script('js/search.js') !!}
     {!! Html::script('js/addrecord.js') !!}
     {!! Html::script('dist/datepicker.js') !!}
     {!! Html::script('js/inlineeditor.js') !!}
-    {!! Html::script('js/jquery.tabledit.min.js') !!}
     {!! Html::script('js/jquery.jeditable.datepicker.js') !!}
     
 
