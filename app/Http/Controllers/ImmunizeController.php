@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use App\Immunization;
+use App\Post;
+use Session;
+
 class ImmunizeController extends Controller
 {
     /**
@@ -36,7 +40,29 @@ class ImmunizeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $this->validate($request, [
+                'p_id' => 'required|max:255|numeric',
+                'vaccination_received' => 'required|max:255|date',
+                'midwife' => 'required|max:255',
+                'vaccine_taken' => 'required|max:255',
+                'description' => 'required|max:255',
+                'weight' => 'required|max:255|numeric',
+                'height' => 'required|max:255|numeric',
+        ]);
+        $immunizationstatus = new Immunization;
+
+        $immunizationstatus->p_id = $request->p_id;
+        $immunizationstatus->vaccination_received = $request->vaccination_received;
+        $immunizationstatus->midwife = $request->midwife;
+        $immunizationstatus->vaccine_taken = $request->vaccine_taken;
+        $immunizationstatus->description = $request->description;
+        $immunizationstatus->weight = $request->weight;
+        $immunizationstatus->height = $request->height;
+
+        $immunizationstatus->save();
+
+        Session::flash('success' , 'Successfully Added.');
+        return redirect()->route('immunization.show',$immunizationstatus->p_id);
     }
 
     /**
@@ -47,7 +73,9 @@ class ImmunizeController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = Post::find($id);
+        $immunizationstatuses = Immunization::where('p_id', '=' , $id)->orderBy('id', 'desc')->get();
+        return view('immunization.show')->withPosts($post)->withImmunizationstatuses($immunizationstatuses);
     }
 
     /**
@@ -70,7 +98,30 @@ class ImmunizeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'p_id' => 'required|max:255|numeric',
+            'vaccination_received' => 'required|max:255|date',
+            'midwife' => 'required|max:255',
+            'vaccine_taken' => 'required|max:255',
+            'description' => 'required|max:255',
+            'weight' => 'required|max:255|numeric',
+            'height' => 'required|max:255|numeric',
+        ]);
+
+        $immunizationstatus = Immunization::find($id);
+
+        $immunizationstatus->vaccination_received = $request->vaccination_received;
+        $immunizationstatus->midwife = $request->midwife;
+        $immunizationstatus->vaccine_taken = $request->vaccine_taken;
+        $immunizationstatus->description = $request->description;
+        $immunizationstatus->weight = $request->weight;
+        $immunizationstatus->height = $request->height;
+
+
+        $immunizationstatus->save();
+
+        Session::flash('success' , 'Changes Successfully saved.');
+        return redirect()->route('immunization.show',$immunizationstatus->p_id);
     }
 
     /**

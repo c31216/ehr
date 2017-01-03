@@ -188,7 +188,6 @@
 
 
      <script>
-       var url = '{{ route('posts.add_vstatus') }}';
        var token = '{{ Session::token() }}';
      </script>
 @endsection

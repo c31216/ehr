@@ -46,11 +46,10 @@ class CheckupController extends Controller
                 'doctor' => 'required|max:255',
                 'symptoms' => 'required|max:255',
                 'prescription' => 'required|max:255',
+                'description' => 'required|max:255',
                 'weight' => 'required|max:255|numeric',
                 'height' => 'required|max:255|numeric',
-                
-            ]);
-
+        ]);
         $checkup = new Checkup;
 
         $checkup->p_id = $request->p_id;
@@ -64,9 +63,9 @@ class CheckupController extends Controller
 
         $checkup->save();
 
-        Session::flash('success', ' Successfully Added');
+        Session::flash('success' , 'Successfully Added.');
+        return redirect()->route('checkup.show',$checkup->p_id);
 
-        return redirect()->route('checkup.show', $checkup->p_id);
     }
 
     /**
@@ -102,15 +101,32 @@ class CheckupController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $this->validate($request, [
+            'p_id' => 'required|max:255|numeric',
+            'checkup_date' => 'required|max:255|date',
+            'doctor' => 'required|max:255',
+            'symptoms' => 'required|max:255',
+            'prescription' => 'required|max:255',
+            'description' => 'required|max:255',
+            'weight' => 'required|max:255|numeric',
+            'height' => 'required|max:255|numeric',
+        ]);
+
         $checklist = Checkup::find($id);
 
-        $checklist->description = $request->description;
+        $checklist->checkup_date = $request->checkup_date;
         $checklist->doctor = $request->doctor;
+        $checklist->symptoms = $request->symptoms;
+        $checklist->prescription = $request->prescription;
+        $checklist->description = $request->description;
+        $checklist->weight = $request->weight;
+        $checklist->height = $request->height;
+
 
         $checklist->save();
 
         Session::flash('success' , 'Changes Successfully saved.');
-
         return redirect()->route('checkup.show',$checklist->p_id);
     }
 

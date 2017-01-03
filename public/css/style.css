@@ -197,3 +197,10 @@ html,body {
      color: #0066ff;
      cursor: pointer; 
 }
+.required{
+        background-color: #d9534f;
+        color: white;
+}
+.error {
+color: red;
+}

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Post;
-use App\Vaccine;
+use App\Immunization;
 use Session;
 
 
@@ -62,9 +62,8 @@ class PostController extends Controller
                 'sex' => 'required|min:1',
                 'mother_name' => 'required|max:255',
                 'address' => 'required|max:255'
-
-            ]);
-      
+        ]);
+        
         $post = new Post;
         $post->pat_fname = $request->pat_fname;
         $post->pat_lname = $request->pat_lname;
@@ -91,7 +90,8 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::find($id);
-        return view('posts.show')->withPosts($post);
+        $immunizationstatus = Immunization::where('p_id', '=' , $id);
+        return view('posts.show')->withPosts($post)->withimmunizationstatuses($immunizationstatus);
     }
 
     /**

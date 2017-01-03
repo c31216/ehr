@@ -8,20 +8,6 @@
 @endsection
 
 @section('content')
- <style>
-      .remove-appearance:disabled{
-         outline: none;
-         border: none;
-         background-color:white;
-      }
-      .required{
-        background-color: #d9534f;
-        color: white;
-      }
-      .error {
-        color: red;
-      }
-  </style>
 
     {{ Form::label('search', "Search: ") }}
     {{ Form:: text('search', null, ['id'=>'search'])}}
@@ -85,6 +71,12 @@
                     </a>
                   </td>
 
+                  <td>
+                    <a href="{{ route('immunization.show', $post->id) }}">
+                        <p>Immunize</p>
+                    </a>
+                  </td>
+
                 </tr>
               @endforeach
             </tbody>
@@ -101,6 +93,7 @@
   <script type="text/javascript">  
     var token = '{{ Session::token() }}';
     var url = '{{ route('posts.search') }}';
+    var edit_submit = 'posts/update';
     var add = '{{ route('posts.store') }}'
     var index = "{{route('posts.index')}}";
     var csrf = '{{ csrf_field() }}';
@@ -110,9 +103,9 @@
   @section('scripts')
     {!! Html::script('js/search.js') !!}
     {!! Html::script('js/addrecord.js') !!}
-    {!! Html::script('dist/datepicker.js') !!}
     {!! Html::script('js/inlineeditor.js') !!}
     {!! Html::script('js/jquery.jeditable.datepicker.js') !!}
+    {!! Html::script('js/custom_inlineeditor.js') !!}
     
 
   @endsection
