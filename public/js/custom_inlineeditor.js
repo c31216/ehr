@@ -66,7 +66,7 @@ $('.date').editable(edit_submit, {
     },
      submitdata : function(value, settings) {
        return {_method: "PUT",_token:token,col:$(this).attr("class").split(' ')[1]};
-	},callback : function(value, settings) {
+	   },callback : function(value, settings) {
          $(this).addClass('success');
     }
  });

@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Post;
+use App\Vaccine;
 use App\Immunization;
 use Session;
+use PDF;
 
 
 class PostController extends Controller
@@ -29,8 +31,8 @@ class PostController extends Controller
     public function index()
     {
         $post = Post::orderBy('id', 'desc')->paginate(10);
-
-        return view('posts.index')->withPosts($post);
+        $vaccine = Vaccine::all();
+        return view('posts.index')->withPosts($post)->withVaccines($vaccine);
 
     }
 
@@ -61,7 +63,9 @@ class PostController extends Controller
                 'age' => 'required|max:255',
                 'sex' => 'required|min:1',
                 'mother_name' => 'required|max:255',
-                'address' => 'required|max:255'
+                'address' => 'required|max:255',
+                'pat_uname' => 'required|max:255',
+                'pat_pass' => 'required|max:255'
         ]);
         
         $post = new Post;
@@ -74,6 +78,8 @@ class PostController extends Controller
         $post->sex = $request->sex;
         $post->mother_name = $request->mother_name;
         $post->address = $request->address;
+        $post->pat_uname = $request->pat_uname;
+        $post->pat_pass = $request->pat_pass;
         $post->registration_date = $request->registration_date;
 
         $post->save();
@@ -89,9 +95,39 @@ class PostController extends Controller
      */
     public function show($id)
     {
+
         $post = Post::find($id);
-        $immunizationstatus = Immunization::where('p_id', '=' , $id);
-        return view('posts.show')->withPosts($post)->withimmunizationstatuses($immunizationstatus);
+        $immunizationstatus = Immunization::where('p_id', '=' , $id)->orderBy('id','desc')->get();
+
+        $vaccination_date = [];
+        $values = [];
+        $null_values = [];
+        $count = 0;
+
+        while ($count<12) {
+            if ($count >= sizeof($immunizationstatus)){
+                while ($count<12) {
+                    $null_values[] = 'Empty';
+                    $count++;
+                }
+                break;
+               
+            }else{
+                $anotherValue = $immunizationstatus[$count];
+            }
+            $values[] =  $anotherValue->vaccination_received;
+            $count++;
+        }
+         foreach (array_merge($values,$null_values) as $merge ) {
+             $vaccination_date[] = $merge;
+         }
+
+         
+
+         
+
+
+        return view('posts.show')->withPosts($post)->withVaccinationdates($vaccination_date)->withImmunizationstatuses($immunizationstatus);
     }
 
     /**
@@ -165,7 +201,8 @@ class PostController extends Controller
             }else{
                 $sort = $request->sort;
             }
-            $posts = Post::orderBy($sort, 'asc')->where('pat_fname','like', $request->search.'%')->orWhere('pat_lname','like', $request->search.'%')->get();
+
+            $posts = Post::orderBy($sort, 'asc')->where('pat_fname','like', $request->search.'%')->orWhere('pat_lname','like', $request->search.'%')->orWhere('address','like', $request->search.'%')->get();
             
             if ($posts) {
                 foreach ($posts as  $post) {
@@ -180,7 +217,9 @@ class PostController extends Controller
                                "<td class='edit mother_name' id='".$post->id."'>".$post->mother_name."</td>".
                                "<td class='edit address' id='".$post->id."'>".$post->address."</td>".
                                "<td><a href='posts/".$post->id."'><p>View Profile</p></a><td>".
-                               "<td><a href='checkup/".$post->id."'><p>Check Up</p></a><td></tr>";
+                               "<td><a href='checkup/".$post->id."'><p>Check Up</p></a><td>".
+                               "<td><a href='immunization/".$post->id."'><p>Immunization</p></a><td>".
+                               "<td><a href='pdf/".$post->id."'><p>Download PDF</p></a><td></tr>";
 
                               
                 }
@@ -191,6 +230,41 @@ class PostController extends Controller
             }
         }
         
+    }
+    public function pdf($id){
+        $post = Post::find($id);
+
+        $immunizationstatus = Immunization::where('p_id', '=' , $id)->orderBy('id','desc')->get();
+
+        $vaccination_date = [];
+        $values = [];
+        $null_values = [];
+        $count = 0;
+        
+        while ($count<12) {
+            if ($count >= sizeof($immunizationstatus)){
+                while ($count<12) {
+                    $null_values[] = 'Empty';
+                    $count++;
+                }
+                break;
+               
+            }else{
+                $anotherValue = $immunizationstatus[$count];
+            }
+            $values[] =  $anotherValue->vaccination_received;
+            $count++;
+        }
+         foreach (array_merge($values,$null_values) as $merge ) {
+             $vaccination_date[] = $merge;
+         }
+
+
+        $pdf = PDF::loadView('pdf/pdf',['posts' => $post,'vaccinationdates' => $vaccination_date]);
+        $pdf->setPaper('A4', 'landscape');
+
+        return $pdf->stream('invoice.pdf');
+
     }
 
   

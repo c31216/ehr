@@ -8,6 +8,7 @@ use App\Http\Requests;
 
 use App\Immunization;
 use App\Post;
+use App\Vaccine;
 use Session;
 
 class ImmunizeController extends Controller
@@ -44,7 +45,7 @@ class ImmunizeController extends Controller
                 'p_id' => 'required|max:255|numeric',
                 'vaccination_received' => 'required|max:255|date',
                 'midwife' => 'required|max:255',
-                'vaccine_taken' => 'required|max:255',
+                'vaccine_id' => 'required|numeric|same:expected_vaccine',
                 'description' => 'required|max:255',
                 'weight' => 'required|max:255|numeric',
                 'height' => 'required|max:255|numeric',
@@ -54,7 +55,7 @@ class ImmunizeController extends Controller
         $immunizationstatus->p_id = $request->p_id;
         $immunizationstatus->vaccination_received = $request->vaccination_received;
         $immunizationstatus->midwife = $request->midwife;
-        $immunizationstatus->vaccine_taken = $request->vaccine_taken;
+        $immunizationstatus->vaccine_id = $request->vaccine_id;
         $immunizationstatus->description = $request->description;
         $immunizationstatus->weight = $request->weight;
         $immunizationstatus->height = $request->height;
@@ -74,8 +75,23 @@ class ImmunizeController extends Controller
     public function show($id)
     {
         $post = Post::find($id);
-        $immunizationstatuses = Immunization::where('p_id', '=' , $id)->orderBy('id', 'desc')->get();
-        return view('immunization.show')->withPosts($post)->withImmunizationstatuses($immunizationstatuses);
+        $immunizationstatus = Immunization::join('vaccines', 'vaccines.id', '=', 'immunizations.vaccine_id')
+            ->select('immunizations.*', 'vaccines.name')
+            ->where('p_id','=', $id)
+            ->get();
+
+        $TookVaccine = Vaccine::whereDoesntHave('users', function($q) use($id) {
+         $q->where('posts.id', $id);
+        })->get();
+
+        if ($TookVaccine->isEmpty()) {
+            echo 'sdfsd';
+         }
+
+        $vaccine = Vaccine::all();
+        return view('immunization.show')->withPosts($post)
+        ->withImmunizationstatuses($immunizationstatus)
+        ->withTookvaccines($TookVaccine)->withVaccines($vaccine);
     }
 
     /**
@@ -102,7 +118,7 @@ class ImmunizeController extends Controller
             'p_id' => 'required|max:255|numeric',
             'vaccination_received' => 'required|max:255|date',
             'midwife' => 'required|max:255',
-            'vaccine_taken' => 'required|max:255',
+            'vaccine_id' => 'required|numeric',
             'description' => 'required|max:255',
             'weight' => 'required|max:255|numeric',
             'height' => 'required|max:255|numeric',
@@ -112,7 +128,7 @@ class ImmunizeController extends Controller
 
         $immunizationstatus->vaccination_received = $request->vaccination_received;
         $immunizationstatus->midwife = $request->midwife;
-        $immunizationstatus->vaccine_taken = $request->vaccine_taken;
+        $immunizationstatus->vaccine_id = $request->vaccine_id;
         $immunizationstatus->description = $request->description;
         $immunizationstatus->weight = $request->weight;
         $immunizationstatus->height = $request->height;

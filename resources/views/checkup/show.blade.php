@@ -38,11 +38,33 @@
 			    </div>
 
 			    <div class="row">
+				  <div class="form-group col-xs-5 col-lg-3">
+
+				    {{ Form::label('weight', "Weight") }}
+				    {{ Form::number('weight', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '255','data-parsley-type' => 'number']) }}
+				  </div>
+				  <div class="form-group col-xs-5 col-lg-3">
+
+				    {{ Form::label('height', "Height") }}
+				    {{ Form::number('height', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '255','data-parsley-type' => 'number']) }}
+				  </div>
+			    </div>
+
+			    <div class="row">
 				  <div class="form-group col-xs-5 col-lg-6">
 
 				    {{ Form::label('doctor', "Doctor Name") }}
 				    {{ Form::text('doctor', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '255']) }}
 				    {{ Form::hidden('p_id', $posts->id) }}
+
+				  </div>
+			    </div>
+
+			    <div class="row">
+				  <div class="form-group col-xs-5 col-lg-6">
+
+				    {{ Form::label('description', "Description") }}
+				    {{ Form::text('description', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '255']) }}
 
 				  </div>
 			    </div>
@@ -63,29 +85,8 @@
 				    {{ Form::text('prescription', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '255']) }}
 				  </div>
 			    </div>
-
-			    <div class="row">
-				  <div class="form-group col-xs-5 col-lg-6">
-
-				    {{ Form::label('description', "Description") }}
-				    {{ Form::text('description', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '255']) }}
-
-				  </div>
-			    </div>
-
-			    <div class="row">
-				  <div class="form-group col-xs-5 col-lg-3">
-
-				    {{ Form::label('weight', "Weight") }}
-				    {{ Form::number('weight', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '255','data-parsley-type' => 'number']) }}
-				  </div>
-				  <div class="form-group col-xs-5 col-lg-3">
-
-				    {{ Form::label('height', "Height") }}
-				    {{ Form::number('height', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '255','data-parsley-type' => 'number']) }}
-				  </div>
-			    </div>
-			    {{ Form::submit('Check-Up', ['class' => 'btn btn-success']) }}
+			    
+			    {{ Form::submit('Submit', ['class' => 'btn btn-success']) }}
 			{!! Form::close() !!}
 			
 	      </div>
@@ -127,8 +128,8 @@
 	            <td><p>{{$checklist->description}}</p></td>
 	            <td><p>{{$checklist->weight}}</p></td>
 	            <td><p>{{$checklist->height}}</p></td>
-	            <td><button type="button" class="btn btn-success" id="edit" data-id="{{$checklist->id}}" data-toggle="modal" data-target="#edit_{{$checklist->id}}">Edit</button></td>
-
+	            {{-- <td><button type="button" class="btn btn-success" id="edit" data-id="{{$checklist->id}}" data-toggle="modal" data-target="#edit_{{$checklist->id}}">Edit</button></td>
+ --}}
 	           </tr>
 
 

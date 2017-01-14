@@ -12,6 +12,18 @@
 @endsection
 
 @section('content')
+<style>
+	.empty{
+		color: #B94A48;
+		background-color: #F2DEDE;
+		border: 1px solid #EED3D7;
+	}
+	.custom_success{
+		color: #468847;
+		background-color: #DFF0D8;
+		border: 1px solid #D6E9C6;
+	}
+</style>
 <div class="container">
 	<h1 class="title-page">{{$posts->pat_lname.', '.$posts->pat_fname}}</h1>
 	<!-- Trigger the modal with a button -->
@@ -42,31 +54,6 @@
 			    <div class="row">
 				  <div class="form-group col-xs-5 col-lg-6">
 
-				    {{ Form::label('midwife', "Midwife Name") }}
-				    {{ Form::text('midwife', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '255']) }}
-				    {{ Form::hidden('p_id', $posts->id) }}
-
-				  </div>
-			    </div>
-			    
-
-			    <div class="row">
-			    	<div class="form-group col-xs-5 col-lg-6">
-			    		<label for="">Vaccine</label>
-						<select class="form-control" name="vaccine_taken">
-						  <option>BCG</option>
-						  <option>Hepa B1 w/in 24 hours</option>
-						  <option>24 hours+</option>
-						  <option>Pentavalent</option>
-						  <option>OPV</option>
-						  <option>MVC</option>
-						</select>
-					</div>
-			    </div>
-
-			    <div class="row">
-				  <div class="form-group col-xs-5 col-lg-6">
-
 				    {{ Form::label('description', "Description") }}
 				    {{ Form::text('description', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '255']) }}
 
@@ -85,7 +72,46 @@
 				    {{ Form::number('height', 0, ['class' => 'form-control', 'required' => '', 'maxlength' => '255','data-parsley-type' => 'number']) }}
 				  </div>
 			    </div>
-			    {{ Form::submit('Check-Up', ['class' => 'btn btn-success']) }}
+
+			    <div class="row">
+				  <div class="form-group col-xs-5 col-lg-6">
+
+				    {{ Form::label('midwife', "Midwife's Name") }}
+				    {{ Form::text('midwife', null, ['class' => 'form-control', 'required' => '', 'maxlength' => '255']) }}
+				    {{ Form::hidden('p_id', $posts->id) }}
+
+				  </div>
+			    </div>
+			    
+
+			    <div class="row" id="vaccines">
+			    	<div class="form-group col-xs-5 col-lg-6">
+			    		@if(!$tookvaccines->isEmpty())
+			    			<label for="">Vaccine</label>
+							<select class="form-control" id="a" name="vaccine_id">
+		
+							   	@foreach ($tookvaccines as $tookvaccine)
+									<option value="{{ $tookvaccine->id }}">{{ $tookvaccine->name }}</option>
+								@endforeach
+
+								{{ Form::hidden('expected_vaccine', null) }}
+							{{-- 	@if($tookvaccines)
+								<option value="{{ $tookvaccines->id }}">{{ $tookvaccines->name }}</option>
+								@else
+								<option value="empty">All Vaccines Has Been Taken Already</option>
+								@endif --}}
+							</select>
+							@else
+								<p>This child has already taken all the vaccines.</p>
+						@endif
+					</div>
+			    </div>
+			    <ul class="parsley-errors-list filled">
+			    	<li id="empty_msg"></li>
+			    </ul>
+			    <br>
+
+			    {{ Form::submit('Submit', ['class' => 'btn btn-success']) }}
 			{!! Form::close() !!}
 			
 	      </div>
@@ -121,12 +147,12 @@
 	          <tr>
 	            <td><p>{{$immunizationstatus->vaccination_received}}</p></td>
 	            <td><p>{{$immunizationstatus->midwife}}</p></td>
-	            <td><p>{{$immunizationstatus->vaccine_taken}}</p></td>
+	            <td><p>{{$immunizationstatus->name}}</p></td>
 	            <td><p>{{$immunizationstatus->description}}</p></td>
 	            <td><p>{{$immunizationstatus->weight}}</p></td>
 	            <td><p>{{$immunizationstatus->height}}</p></td>
-	            <td><button type="button" class="btn btn-success" id="edit" data-id="{{$immunizationstatus->id}}" data-toggle="modal" data-target="#edit_{{$immunizationstatus->id}}">Edit</button></td>
-
+	            {{-- <td><button type="button" class="btn btn-success" id="edit" data-id="{{$immunizationstatus->id}}" data-toggle="modal" data-target="#edit_{{$immunizationstatus->id}}">Edit</button></td>
+ --}}
 	           </tr>
 
 
@@ -164,13 +190,10 @@
 						    <div class="row">
 						    	<div class="form-group col-xs-5 col-lg-6">
 						    		<label for="">Vaccine</label>
-									<select class="form-control" name="vaccine_taken">
-									  <option>BCG</option>
-									  <option>Hepa B1 w/in 24 hours</option>
-									  <option>24 hours+</option>
-									  <option>Pentavalent</option>
-									  <option>OPV</option>
-									  <option>MVC</option>
+									<select class="form-control" name="vaccine_id">
+									  	@foreach ($vaccines as $vaccine)
+											<option value="{{ $vaccine->id }}">{{ $vaccine->name }}</option>
+										@endforeach
 									</select>
 								</div>
 						    </div>
@@ -234,9 +257,6 @@
 	{!! Html::script('js/parsley.min.js') !!}
     {!! Html::script('dist/datepicker.js') !!}
     {!! Html::script('js/checkup.js') !!}
-    
-
-
-	
+    {!! Html::script('js/immunize.validation.js') !!}
 
 @endsection

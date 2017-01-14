@@ -1,9 +1,5 @@
-@extends('main')
 
-@section('content')
-
-	
-    <div class="table-responsive">
+<div class="table-responsive">
       <table class="table table-bordered">
         <h3>Basic info</h3>
         <thead>
@@ -78,6 +74,7 @@
           @foreach($vaccinationdates as $vaccination_date)
             <td>{{$vaccination_date}}</td>
           @endforeach
+        </tr>
       </tbody>
       </table>
     </div><!-- Div.table-responsive-->
@@ -175,13 +172,3 @@
         </tbody>
       </table>
     </div><!-- Div.table-responsive-->
-
-
-     <script>
-       var token = '{{ Session::token() }}';
-     </script>
-@endsection
-
-@section('scripts')
-
-@endsection

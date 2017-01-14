@@ -23,7 +23,9 @@ $(document).ready(function(){
 								'<td><input type="number" name="age" value="0" class="col-xs-12"></input></td>'+
 								'<td><input type="text" name="sex" maxlength="1" class="col-xs-12"></input></td>'+
 								'<td><input type="text" name="mother_name" class="col-xs-12"></input></td>'+
-								'<td><input type="text" name="address" class="col-xs-12"></input></td>'+ csrf+
+								'<td><input type="text" name="address" class="col-xs-12"></input></td>'+
+								'<td id="hidden"><input type="text" name="pat_uname" class="col-xs-12"></input></td>'+
+								'<td id="hidden"><input type="text" name="pat_pass" class="col-xs-12"></input></td>'+ csrf+
 							'</tr>');
 		event.stopPropagation();
 		$("tr#active td input[name=pat_lname]").focus();
@@ -46,6 +48,8 @@ $(document).ready(function(){
 			var mother_name = $("input[name=mother_name]").val();
 			var address = $("input[name=address]").val();
 			var registration_date = $("input[name=registration_date]").val();
+			var pat_uname = $("input[name=pat_uname]").val();
+			var pat_pass = $("input[name=pat_pass]").val();
 
 			var pat_bdate = pat_bdate.replace(/\//g, "-");
 			var dateAr = pat_bdate.split('-');
@@ -59,8 +63,10 @@ $(document).ready(function(){
 			$.ajax({
 	          type: 'POST',
 	          url: add,
-	          data: {registration_date:registration_date,pat_bdate:pat_bdate,pat_lname:pat_lname,pat_fname:pat_fname,weight:weight,height:height,age:age,sex:sex,mother_name:mother_name,address:address,_token:token},
+	          data: {pat_uname:pat_uname,pat_pass:pat_pass,registration_date:registration_date,pat_bdate:pat_bdate,pat_lname:pat_lname,pat_fname:pat_fname,weight:weight,height:height,age:age,sex:sex,mother_name:mother_name,address:address,_token:token},
 	          success: function(id){
+	          	$("input[name=pat_pass]").remove();
+	          	$("input[name=pat_uname]").remove();
 
 	          	$( "input[name!='registration_date'][name!='pat_bdate']").closest('td').addClass('edit');
 
@@ -73,6 +79,13 @@ $(document).ready(function(){
 	          	
 	          	$("tr#active").addClass('success');
 	          	$("tr#active td input").remove();
+	          	$( "tr#active #hidden" ).each(function() {
+				  $( this ).remove();
+				});
+				$( "tr #hidden" ).each(function() {
+				  $( this ).remove();
+				});
+
 	          	
 	          	$("tr#active").append('<td><a href="posts/'+id+'"><p>View Profile</p></a></td>'+
 	          						  '<td><a href="checkup/'+id+'"><p>Check Up</p></a></td>'+

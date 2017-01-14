@@ -17,6 +17,7 @@ class Checkups extends Migration
             $table->increments('id');
             $table->string('symptoms');
             $table->string('prescription');
+            $table->string('description');
             $table->string('doctor');
             $table->integer('p_id');
             $table->date('checkup_date');

@@ -19,3 +19,11 @@ Route::resource('immunization', 'ImmunizeController');
 Route::get('search', [
     'as' => 'posts.search', 'uses' => 'PostController@search'
 ]);
+
+Route::get('pdf/{id}', [
+    'as' => 'posts.pdf', 'uses' => 'PostController@pdf'
+]);
+
+Route::get('/', function(){
+	return view('auth/login');
+});
